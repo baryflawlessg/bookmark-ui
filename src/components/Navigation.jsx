@@ -7,9 +7,15 @@ const Navigation = () => {
   const navigate = useNavigate()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  const handleLogout = () => {
-    logout()
-    navigate('/login')
+  const handleLogout = async () => {
+    try {
+      await logout()
+      navigate('/login')
+    } catch (error) {
+      console.error('Logout failed:', error)
+      // Still navigate even if API call fails
+      navigate('/login')
+    }
   }
 
   const toggleMenu = () => {
@@ -22,35 +28,39 @@ const Navigation = () => {
         <div className="flex justify-between h-16">
           {/* Logo and main nav */}
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0 flex items-center">
-              <h1 className="text-xl font-bold text-primary-600">BookVerse</h1>
-            </Link>
-            
-            {/* Desktop navigation */}
-            <div className="hidden md:ml-6 md:flex md:space-x-8">
-              <Link
-                to="/books"
-                className="text-gray-900 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Books
+            {isAuthenticated ? (
+              <Link to="/books" className="flex-shrink-0 flex items-center">
+                <h1 className="text-xl font-bold text-primary-600">BookVerse</h1>
               </Link>
-              {isAuthenticated && (
-                <>
-                  <Link
-                    to="/recommendations"
-                    className="text-gray-900 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                  >
-                    Recommendations
-                  </Link>
-                  <Link
-                    to="/profile"
-                    className="text-gray-900 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                  >
-                    Profile
-                  </Link>
-                </>
-              )}
-            </div>
+            ) : (
+              <div className="flex-shrink-0 flex items-center">
+                <h1 className="text-xl font-bold text-primary-600">BookVerse</h1>
+              </div>
+            )}
+            
+            {/* Desktop navigation - only show when authenticated */}
+            {isAuthenticated && (
+              <div className="hidden md:ml-6 md:flex md:space-x-8">
+                <Link
+                  to="/books"
+                  className="text-gray-900 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  Books
+                </Link>
+                <Link
+                  to="/recommendations"
+                  className="text-gray-900 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  Recommendations
+                </Link>
+                <Link
+                  to="/profile"
+                  className="text-gray-900 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  Profile
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Auth buttons */}
@@ -114,15 +124,15 @@ const Navigation = () => {
       {/* Mobile menu */}
       <div className={`${isMenuOpen ? 'block' : 'hidden'} md:hidden`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200">
-          <Link
-            to="/books"
-            className="text-gray-900 hover:text-primary-600 block px-3 py-2 rounded-md text-base font-medium"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Books
-          </Link>
-          {isAuthenticated && (
+          {isAuthenticated ? (
             <>
+              <Link
+                to="/books"
+                className="text-gray-900 hover:text-primary-600 block px-3 py-2 rounded-md text-base font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Books
+              </Link>
               <Link
                 to="/recommendations"
                 className="text-gray-900 hover:text-primary-600 block px-3 py-2 rounded-md text-base font-medium"
@@ -152,8 +162,7 @@ const Navigation = () => {
                 </button>
               </div>
             </>
-          )}
-          {!isAuthenticated && (
+          ) : (
             <div className="border-t border-gray-200 pt-4 pb-3">
               <Link
                 to="/login"

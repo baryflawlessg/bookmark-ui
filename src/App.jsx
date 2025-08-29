@@ -1,57 +1,19 @@
 import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Navigation from './components/Navigation.jsx'
-import ProtectedRoute from './components/ProtectedRoute.jsx'
 import LoadingSpinner from './components/LoadingSpinner.jsx'
 import { useAuth } from './contexts/AuthContext.jsx'
+import Home from './pages/Home.jsx'
+import Books from './pages/Books.jsx'
+import Login from './pages/Login.jsx'
+import Signup from './pages/Signup.jsx'
 
 // Placeholder components for pages (we'll create these next)
-const Home = () => (
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div className="text-center">
-      <h1 className="text-4xl font-bold text-gray-900 mb-4">
-        Welcome to BookVerse
-      </h1>
-      <p className="text-xl text-gray-600 mb-8">
-        Discover books, share reviews, and get personalized recommendations
-      </p>
-      <div className="space-x-4">
-        <a href="/books" className="btn btn-primary">
-          Browse Books
-        </a>
-        <a href="/signup" className="btn btn-secondary">
-          Get Started
-        </a>
-      </div>
-    </div>
-  </div>
-)
-
-const Books = () => (
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <h1 className="text-3xl font-bold text-gray-900 mb-6">Books</h1>
-    <p className="text-gray-600">Books listing page coming soon...</p>
-  </div>
-)
 
 const BookDetails = () => (
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <h1 className="text-3xl font-bold text-gray-900 mb-6">Book Details</h1>
     <p className="text-gray-600">Book details page coming soon...</p>
-  </div>
-)
-
-const Login = () => (
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <h1 className="text-3xl font-bold text-gray-900 mb-6">Login</h1>
-    <p className="text-gray-600">Login page coming soon...</p>
-  </div>
-)
-
-const Signup = () => (
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <h1 className="text-3xl font-bold text-gray-900 mb-6">Sign Up</h1>
-    <p className="text-gray-600">Signup page coming soon...</p>
   </div>
 )
 
@@ -82,7 +44,7 @@ const NotFound = () => (
 )
 
 const App = () => {
-  const { loading } = useAuth()
+  const { loading, isAuthenticated } = useAuth()
 
   if (loading) {
     return (
@@ -97,29 +59,25 @@ const App = () => {
       <Navigation />
       <main className="flex-1">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/books" element={<Books />} />
-          <Route path="/books/:id" element={<BookDetails />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route 
-            path="/profile" 
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/recommendations" 
-            element={
-              <ProtectedRoute>
-                <Recommendations />
-              </ProtectedRoute>
-            } 
-          />
-          <Route path="/404" element={<NotFound />} />
-          <Route path="*" element={<Navigate to="/404" replace />} />
+          {/* Public routes - only accessible when NOT authenticated */}
+          {!isAuthenticated ? (
+            <>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="*" element={<Navigate to="/login" replace />} />
+            </>
+          ) : (
+            <>
+              {/* Protected routes - only accessible when authenticated */}
+              <Route path="/" element={<Navigate to="/books" replace />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/books" element={<Books />} />
+              <Route path="/books/:id" element={<BookDetails />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/recommendations" element={<Recommendations />} />
+              <Route path="*" element={<Navigate to="/books" replace />} />
+            </>
+          )}
         </Routes>
       </main>
     </div>
