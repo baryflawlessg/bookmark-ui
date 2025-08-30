@@ -61,7 +61,7 @@ The pipeline automatically runs on push to `main` or `master` branch:
 
 1. Push your code to GitHub
 2. Check the Actions tab for deployment status
-3. Your app will be available at: `http://bookmark-ui-frontend.s3-website-us-east-1.amazonaws.com`
+3. Your app will be available at: `http://bookmark-ui-frontend.s3-website.ap-south-1.amazonaws.com`
 
 ### Option 2: Local Deployment
 
@@ -98,7 +98,7 @@ aws s3 sync dist/ s3://bookmark-ui-frontend --delete
 aws s3 ls s3://bookmark-ui-frontend
 
 # Test website endpoint
-curl http://bookmark-ui-frontend.s3-website-us-east-1.amazonaws.com
+curl http://bookmark-ui-frontend.s3-website.ap-south-1.amazonaws.com
 
 # Destroy infrastructure (if needed)
 cd terraform && terraform destroy

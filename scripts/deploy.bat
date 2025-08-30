@@ -18,7 +18,7 @@ echo ☁️ Deploying to S3...
 aws s3 sync dist/ s3://bookmark-ui-frontend --delete
 
 echo ✅ Deployment completed successfully!
-echo 🌐 Your application is available at: http://bookmark-ui-frontend.s3-website-us-east-1.amazonaws.com
+echo 🌐 Your application is available at: http://bookmark-ui-frontend.s3-website.ap-south-1.amazonaws.com
 
 REM Optional: Invalidate CloudFront cache if using CloudFront
 if defined CLOUDFRONT_DISTRIBUTION_ID (
