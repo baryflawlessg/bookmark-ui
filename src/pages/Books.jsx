@@ -5,7 +5,7 @@ import LoadingSpinner from '../components/LoadingSpinner.jsx'
 import EmptyState from '../components/EmptyState.jsx'
 import toast from 'react-hot-toast'
 import { API_ENDPOINTS } from '../config/api.js'
-import { useFavorites } from '../hooks/useFavorites.js'
+import { useFavoriteStatus } from '../hooks/useFavoriteStatus.js'
 
 const Books = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -16,7 +16,7 @@ const Books = () => {
   const [totalElements, setTotalElements] = useState(0)
   
   // Favorites functionality
-  const { toggleFavorite, isFavorite } = useFavorites()
+  const { toggleFavorite, isFavorite } = useFavoriteStatus()
 
   // Filter states
   const [searchQuery, setSearchQuery] = useState(searchParams.get('query') || '')
@@ -127,7 +127,7 @@ const Books = () => {
     }
   }, [buildQueryParams, setSearchParams])
 
-  // Fetch books only on initial load and when search is submitted
+  // Fetch books only on initial load
   useEffect(() => {
     fetchBooks()
   }, []) // Empty dependency array - only runs once on mount
