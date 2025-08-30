@@ -10,6 +10,7 @@ export const API_ENDPOINTS = {
   USER_PROFILE: `${API_BASE_URL}/api/auth/profile`,
   REVIEWS: `${API_BASE_URL}/api/reviews`,
   RECOMMENDATIONS: `${API_BASE_URL}/api/recommendations`,
+  USERS: `${API_BASE_URL}/api/users`,
   // Favorites endpoints
   USER_FAVORITES: (userId) => `${API_BASE_URL}/api/users/${userId}/favorites`,
   ADD_FAVORITE: (userId, bookId) => `${API_BASE_URL}/api/users/${userId}/favorites/${bookId}`,
