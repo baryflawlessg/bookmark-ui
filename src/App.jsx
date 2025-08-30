@@ -5,17 +5,11 @@ import LoadingSpinner from './components/LoadingSpinner.jsx'
 import { useAuth } from './contexts/AuthContext.jsx'
 import Home from './pages/Home.jsx'
 import Books from './pages/Books.jsx'
+import BookDetails from './pages/BookDetails.jsx'
 import Login from './pages/Login.jsx'
 import Signup from './pages/Signup.jsx'
 
 // Placeholder components for pages (we'll create these next)
-
-const BookDetails = () => (
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <h1 className="text-3xl font-bold text-gray-900 mb-6">Book Details</h1>
-    <p className="text-gray-600">Book details page coming soon...</p>
-  </div>
-)
 
 const Profile = () => (
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

@@ -25,6 +25,10 @@
     @apply bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
   }
   
+  .btn-outline-red {
+    @apply border border-red-600 text-red-600 bg-transparent hover:bg-red-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2;
+  }
+  
   .input {
     @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
   }
