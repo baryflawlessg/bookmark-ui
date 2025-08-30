@@ -9,6 +9,11 @@ export const API_ENDPOINTS = {
   AUTH_LOGOUT: `${API_BASE_URL}/api/auth/logout`,
   USER_PROFILE: `${API_BASE_URL}/api/auth/profile`,
   REVIEWS: `${API_BASE_URL}/api/reviews`,
+  RECOMMENDATIONS: `${API_BASE_URL}/api/recommendations`,
+  // Favorites endpoints
+  USER_FAVORITES: (userId) => `${API_BASE_URL}/api/users/${userId}/favorites`,
+  ADD_FAVORITE: (userId, bookId) => `${API_BASE_URL}/api/users/${userId}/favorites/${bookId}`,
+  REMOVE_FAVORITE: (userId, bookId) => `${API_BASE_URL}/api/users/${userId}/favorites/${bookId}`,
 }
 
 export default API_BASE_URL

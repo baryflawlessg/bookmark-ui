@@ -5,6 +5,7 @@ import LoadingSpinner from '../components/LoadingSpinner.jsx'
 import EmptyState from '../components/EmptyState.jsx'
 import toast from 'react-hot-toast'
 import { API_ENDPOINTS } from '../config/api.js'
+import { useFavorites } from '../hooks/useFavorites.js'
 
 const Books = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -13,6 +14,9 @@ const Books = () => {
   const [error, setError] = useState(null)
   const [totalPages, setTotalPages] = useState(0)
   const [totalElements, setTotalElements] = useState(0)
+  
+  // Favorites functionality
+  const { toggleFavorite, isFavorite } = useFavorites()
 
   // Filter states
   const [searchQuery, setSearchQuery] = useState(searchParams.get('query') || '')
@@ -29,9 +33,7 @@ const Books = () => {
 
   // Available options
   const genres = [
-    'FANTASY', 'SCI_FI', 'MYSTERY', 'ROMANCE', 'THRILLER', 
-    'HISTORICAL_FICTION', 'LITERARY_FICTION', 'YOUNG_ADULT',
-    'CHILDREN', 'NONFICTION', 'BIOGRAPHY', 'MEMOIR', 'SELF_HELP'
+    'ROMANCE', 'SCI_FI', 'FANTASY', 'MYSTERY', 'COMEDY'
   ]
 
   const sortOptions = [
@@ -219,7 +221,7 @@ const Books = () => {
     )
   }
 
-  // Render book card
+    // Render book card
   const renderBookCard = (book) => {
     // Defensive check for book data
     if (!book || !book.id) {
@@ -227,56 +229,70 @@ const Books = () => {
       return null
     }
     
+    // Debug: Log the book object structure to see what properties are available
+    console.log('Book object from Books API:', book)
+    
     return (
       <div
         key={book.id}
         className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
       >
-        <div className="aspect-[3/4] bg-gray-100 rounded-t-lg flex items-center justify-center">
-          {book.coverImageUrl ? (
-            <img
-              src={book.coverImageUrl}
-              alt={`Cover of ${book.title || 'Book'}`}
-              className="w-full h-full object-cover rounded-t-lg"
-            />
-          ) : (
-            <div className="text-gray-400 text-4xl">📚</div>
-          )}
-        </div>
+        <Link to={`/books/${book.id}`}>
+          <div className="aspect-[3/4] overflow-hidden rounded-t-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+            <div className="text-white text-center p-4">
+              <div className="text-4xl mb-2">📚</div>
+              <div className="text-sm font-medium">
+                {book.title?.split(' ').slice(0, 2).join(' ') || 'Book Cover'}
+              </div>
+            </div>
+          </div>
+          
+          <div className="p-4">
+            <h3 className="font-semibold text-gray-900 line-clamp-2 mb-2">
+              {book.title || 'Untitled'}
+            </h3>
+            
+                         <p className="text-gray-600 text-sm mb-2 line-clamp-1">
+               by {book.author || book.authorName || book.bookAuthor || 'Unknown Author'}
+             </p>
+            
+                         <div className="mb-3">
+               {renderStarRating(book.averageRating)}
+             </div>
+            
+                         {(book.genre || book.publicationYear) && (
+               <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
+                 {book.genre && <span>{book.genre}</span>}
+                 {book.publicationYear && <span>{book.publicationYear}</span>}
+               </div>
+             )}
+          </div>
+        </Link>
         
-        <div className="p-4">
-          <h3 className="font-semibold text-gray-900 line-clamp-2 mb-2">
-            {book.title || 'Untitled'}
-          </h3>
-          
-          <p className="text-gray-600 text-sm mb-2 line-clamp-1">
-            by {book.author || 'Unknown Author'}
-          </p>
-          
-          <div className="flex items-center justify-between mb-3">
-            {renderStarRating(book.averageRating)}
-            <span className="text-lg font-bold text-primary-600">
-              ${book.price?.toFixed(2) || 'N/A'}
-            </span>
-          </div>
-          
-          <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
-            <span>{book.genre || 'Unknown'}</span>
-            <span>{book.publicationYear || 'N/A'}</span>
-          </div>
-          
-          <div className="flex space-x-2">
-            <Link
-              to={`/books/${book.id}`}
-              className="btn btn-primary flex-1 text-center py-2"
-            >
-              View Details
-            </Link>
-            <button className="btn btn-secondary py-2 px-3">
-              ❤️
-            </button>
-          </div>
-        </div>
+                 <div className="px-4 pb-4">
+           <div className="flex space-x-2">
+             <Link
+               to={`/books/${book.id}`}
+               className="btn btn-primary flex-1 text-center py-2"
+             >
+               View Details
+             </Link>
+             <button 
+               onClick={(e) => {
+                 e.preventDefault()
+                 toggleFavorite(book.id)
+               }}
+               className={`btn py-2 px-3 ${
+                 isFavorite(book.id) 
+                   ? 'btn-primary text-red-600 hover:text-red-700' 
+                   : 'btn-secondary hover:text-red-600'
+               }`}
+               title={isFavorite(book.id) ? 'Remove from favorites' : 'Add to favorites'}
+             >
+               ❤️
+             </button>
+           </div>
+         </div>
       </div>
     )
   }

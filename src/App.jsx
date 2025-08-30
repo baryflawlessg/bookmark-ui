@@ -8,6 +8,7 @@ import Books from './pages/Books.jsx'
 import BookDetails from './pages/BookDetails.jsx'
 import Login from './pages/Login.jsx'
 import Signup from './pages/Signup.jsx'
+import Recommendations from './pages/Recommendations.jsx'
 
 // Placeholder components for pages (we'll create these next)
 
@@ -18,12 +19,7 @@ const Profile = () => (
   </div>
 )
 
-const Recommendations = () => (
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <h1 className="text-3xl font-bold text-gray-900 mb-6">Recommendations</h1>
-    <p className="text-gray-600">Recommendations page coming soon...</p>
-  </div>
-)
+
 
 const NotFound = () => (
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

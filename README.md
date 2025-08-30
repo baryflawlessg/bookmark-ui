@@ -8,6 +8,9 @@ A React-based frontend application for the Book Review system.
 - **User Management**: Login, Signup, and Logout functionality
 - **Home Page**: Recent community reviews (authenticated users only)
 - **Books Listing**: Search, filter, and browse books with pagination
+- **Favorites System**: Add/remove books to favorites, view favorites in Profile
+- **Book Details**: View detailed book information with reviews
+- **Recommendations**: Discover top-rated books
 - **Responsive Design**: Mobile-first approach with Tailwind CSS
 
 ## Getting Started
